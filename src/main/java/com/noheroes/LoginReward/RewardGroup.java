@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
  *
  * @author Sorklin <sorklin at gmail.com>
  */
-public class BonusGroup {
+public class RewardGroup {
     
     private String groupName;
     private double groupAmount;
@@ -30,10 +30,10 @@ public class BonusGroup {
     private String groupMessage;
     private int rank;
     
-    public BonusGroup(String name, double amount, String message, int rank){
+    public RewardGroup(String name, double amount, String message, int rank){
         this.groupName = name;
         this.groupAmount = amount;
-        this.groupPerm = "dailybonus.get." + name.toLowerCase();
+        this.groupPerm = "loginreward.get." + name.toLowerCase();
         this.groupMessage = message.replace("$amount$", LoginReward.getBalanceHandler().format(amount));
         this.rank = rank;
     }

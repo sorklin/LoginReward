@@ -1,5 +1,10 @@
 package com.noheroes.LoginReward;
 
+import com.noheroes.LoginReward.economy.iConomy6Balance;
+import com.noheroes.LoginReward.economy.iConomy5Balance;
+import com.noheroes.LoginReward.economy.DummyBalance;
+import com.noheroes.LoginReward.economy.Balance;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +29,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 public class LoginReward extends JavaPlugin {
     
 	private static final Logger logr = Logger.getLogger("Minecraft");
+        private static String pluginName;
         
 	private static Balance iConomy = null;
         private static PlayerStorage ps = null;
@@ -35,7 +41,7 @@ public class LoginReward extends JavaPlugin {
 	private final LRPlayerListener playerListener = new LRPlayerListener(this);
         private final LRPluginListener pluginListener = new LRPluginListener(this);
         
-        private BonusGroup[] bonusGroups;
+        private RewardGroup[] bonusGroups;
 	 
 	@Override
 	public void onDisable() {
@@ -51,6 +57,8 @@ public class LoginReward extends JavaPlugin {
             
             server = getServer();
             LoginReward.db = this;
+            
+            pluginName = "[" + this.getDescription().getName() + "] ";
             
             //Try once here, otherwise just listen for it.
             if(pm.isPluginEnabled("iConomy")){
@@ -71,7 +79,7 @@ public class LoginReward extends JavaPlugin {
             this.loadconfig(this.getConfig());
             this.saveConfig();
             
-            for(BonusGroup b : bonusGroups){
+            for(RewardGroup b : bonusGroups){
                 LoginReward.slog("Found group: " + b.getName() + " with a " + b.getAmount() + " bonus. Permission needed to use: " + b.getPerm());
             }
             
@@ -103,14 +111,14 @@ public class LoginReward extends JavaPlugin {
     }
     
     public static void slog(String message){
-        logr.log(Level.INFO, "[DailyBonusNH] " + message);
+        logr.log(Level.INFO, LoginReward.pluginName + message);
     }
     
     public static void log(Level level, String message){
         logr.log(level, message);
     }
     
-    public BonusGroup[] getGroups(){
+    public RewardGroup[] getGroups(){
         return bonusGroups;
     }
     
@@ -118,23 +126,23 @@ public class LoginReward extends JavaPlugin {
         dbConfig.options().copyDefaults(true);
         LoginReward.cumulative = dbConfig.getBoolean("Cumulative");
         
-        List<BonusGroup> bg = new ArrayList<BonusGroup>();
+        List<RewardGroup> bg = new ArrayList<RewardGroup>();
         
         String name = "";
         String msg = "";
         double amt = 0.0;
         int rank = 0;
         
-        Set<String> keys = dbConfig.getConfigurationSection("BonusGroups").getKeys(false);
+        Set<String> keys = dbConfig.getConfigurationSection("RewardGroups").getKeys(false);
         Iterator<String> it = keys.iterator();
         while (it.hasNext()){
             name = it.next();
-            msg = dbConfig.getString("BonusGroups." + name + ".Message", "You earned $amount$ for logging in today!");
-            amt = dbConfig.getDouble("BonusGroups." + name + ".Amount", 0.0);
-            rank = dbConfig.getInt("BonusGroups." + name + ".Rank", 0);
-            bg.add(new BonusGroup(name, amt, msg, rank));
+            msg = dbConfig.getString("RewardGroups." + name + ".Message", "You earned $amount$ for logging in today!");
+            amt = dbConfig.getDouble("RewardGroups." + name + ".Amount", 0.0);
+            rank = dbConfig.getInt("RewardGroups." + name + ".Rank", 0);
+            bg.add(new RewardGroup(name, amt, msg, rank));
         }
-        bonusGroups = new BonusGroup[bg.size()];
+        bonusGroups = new RewardGroup[bg.size()];
         bonusGroups = bg.toArray(bonusGroups);
     }
 }

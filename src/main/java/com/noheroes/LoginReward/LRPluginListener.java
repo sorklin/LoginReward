@@ -16,6 +16,9 @@
  */
 package com.noheroes.LoginReward;
 
+import com.noheroes.LoginReward.economy.iConomy6Balance;
+import com.noheroes.LoginReward.economy.iConomy5Balance;
+import com.noheroes.LoginReward.economy.DummyBalance;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;

@@ -1,9 +1,10 @@
-package com.noheroes.LoginReward;
+package com.noheroes.LoginReward.economy;
 
 import org.bukkit.entity.Player;
 
 import com.iCo6.iConomy;
 import com.iCo6.system.Accounts;
+import com.noheroes.LoginReward.LoginReward;
 
 public class iConomy6Balance implements Balance {
     

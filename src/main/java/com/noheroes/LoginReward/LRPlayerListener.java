@@ -21,10 +21,10 @@ public class LRPlayerListener extends PlayerListener{
         Player player = event.getPlayer();
                 
         if(!LoginReward.getPlayerStorage().loggedOnToday(player)){
-            BonusGroup[] groups = plugin.getGroups();
-            BonusGroup highestRank = null;
+            RewardGroup[] groups = plugin.getGroups();
+            RewardGroup highestRank = null;
             
-            for(BonusGroup bg : groups){
+            for(RewardGroup bg : groups){
                 if(bg.giveBonus(player)){
                     if(LoginReward.cumulative){
                         giveBonus(player, bg);
@@ -52,7 +52,7 @@ public class LRPlayerListener extends PlayerListener{
         }
     }
     
-    private void giveBonus(Player player, BonusGroup bg){
+    private void giveBonus(Player player, RewardGroup bg){
         LoginReward.getBalanceHandler().add(player, bg.getAmount());
         LoginReward.getPlayerStorage().recordBonus(player);
         player.sendMessage(ChatColor.GREEN + bg.getMessage());

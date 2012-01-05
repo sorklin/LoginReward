@@ -9,7 +9,7 @@
 #    Rank: <rank -- higher numbers outrank lower for non-cumulative bonuses>
 
 Cumulative: true
-BonusGroups:
+RewardGroups:
   Normal:
     Amount: 15.0
     Message: BONUS! You earned $amount$ for logging in today!

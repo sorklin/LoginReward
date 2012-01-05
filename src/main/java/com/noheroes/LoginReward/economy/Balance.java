@@ -1,4 +1,4 @@
-package com.noheroes.LoginReward;
+package com.noheroes.LoginReward.economy;
 
 import org.bukkit.entity.Player;
 

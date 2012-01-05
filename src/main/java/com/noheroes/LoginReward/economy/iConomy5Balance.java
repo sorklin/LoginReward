@@ -1,7 +1,8 @@
-package com.noheroes.LoginReward;
+package com.noheroes.LoginReward.economy;
 
 import org.bukkit.entity.Player;
 import com.iConomy.iConomy;
+import com.noheroes.LoginReward.LoginReward;
 
 public class iConomy5Balance implements Balance {
 	private iConomy iconomy;
