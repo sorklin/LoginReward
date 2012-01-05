@@ -1,0 +1,20 @@
+# Cumulative: true for cumulative rewards (for those people who have multiple bonus
+# permissions).  False if you want only one reward given. Reward will be the 
+# last, highest ranked reward that the person has permissions for.
+# ------------
+# Add your own groups by adding the name of the group under the BonusGroups node as follows:
+#  <name>:
+#    Amount: <#.##> - amount in decimal
+#    Message: <message> - to display to user
+#    Rank: <rank -- higher numbers outrank lower for non-cumulative bonuses>
+
+Cumulative: true
+BonusGroups:
+  Normal:
+    Amount: 15.0
+    Message: BONUS! You earned $amount$ for logging in today!
+    Rank: 0
+  VIP:
+    Amount: 5.0
+    Message: VIP, you earned an additional $amount$ bonus!
+    Rank: 1
