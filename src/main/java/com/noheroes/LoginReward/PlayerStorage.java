@@ -18,7 +18,6 @@ package com.noheroes.LoginReward;
 
 import com.mini.Arguments;
 import com.mini.Mini;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
-
 import org.bukkit.entity.Player;
 
 /**
@@ -47,7 +45,7 @@ public class PlayerStorage {
     
     private void initFile() {
         try {
-            mini_file = new File(db.getDataFolder(), "DailyBonus.mini");
+            mini_file = new File(db.getDataFolder(), "lr.mini");
             
             if(!mini_file.exists()){
                 mini_file.createNewFile();

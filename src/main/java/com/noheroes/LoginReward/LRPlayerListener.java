@@ -2,11 +2,14 @@ package com.noheroes.LoginReward;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 
+//Can this be async?  If it doesn't use any bukkit calls, then it can raise an event when its done.
 
-public class LRPlayerListener extends PlayerListener{
+public class LRPlayerListener implements Listener {
 	
     private LoginReward plugin;
     
@@ -14,7 +17,7 @@ public class LRPlayerListener extends PlayerListener{
         plugin = instance;
     }
 	
-    @Override
+    @EventHandler(priority= EventPriority.MONITOR, ignoreCancelled=true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         LoginReward.slog("Player joined: " + event.getPlayer().getName());
         

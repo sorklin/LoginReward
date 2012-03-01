@@ -16,19 +16,21 @@
  */
 package com.noheroes.LoginReward;
 
-import com.noheroes.LoginReward.economy.iConomy6Balance;
-import com.noheroes.LoginReward.economy.iConomy5Balance;
 import com.noheroes.LoginReward.economy.DummyBalance;
+import com.noheroes.LoginReward.economy.iConomy5Balance;
+import com.noheroes.LoginReward.economy.iConomy6Balance;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
 /**
  *
  * @author Sorklin <sorklin at gmail.com>
  */
-public class LRPluginListener extends ServerListener {
+public class LRPluginListener implements Listener {
     
     private LoginReward db;
     
@@ -36,7 +38,7 @@ public class LRPluginListener extends ServerListener {
         this.db = instance;
     }
 
-    @Override
+    @EventHandler(priority= EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent event) {
         Plugin p = event.getPlugin();
         
@@ -51,7 +53,7 @@ public class LRPluginListener extends ServerListener {
         }
     }
 
-    @Override
+    @EventHandler(priority= EventPriority.MONITOR)
     public void onPluginDisable(PluginDisableEvent event) {
         Plugin p = event.getPlugin();
         if(p.getClass().getName().equals("com.iCo6.iConomy")) {

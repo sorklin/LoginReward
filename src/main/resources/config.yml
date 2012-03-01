@@ -2,7 +2,7 @@
 # permissions).  False if you want only one reward given. Reward will be the 
 # last, highest ranked reward that the person has permissions for.
 # ------------
-# Add your own groups by adding the name of the group under the BonusGroups node as follows:
+# Add your own groups by adding the name of the group under the RewardGroups node as follows:
 #  <name>:
 #    Amount: <#.##> - amount in decimal
 #    Message: <message> - to display to user
@@ -11,10 +11,20 @@
 Cumulative: true
 RewardGroups:
   Normal:
-    Amount: 15.0
-    Message: BONUS! You earned $amount$ for logging in today!
+    Type: money
+    Money:
+      Amount: 15.0
+      Message: BONUS! You earned $amount$ for logging in today!
+    Item:
+      ItemNumber: 0
+      Amount: 1
+      Message: BONUS! You earned $amount$ $items$(s) for logging in today!
+    Cumulative: true
     Rank: 0
   VIP:
+    Type: item
     Amount: 5.0
+    Item: 0
     Message: VIP, you earned an additional $amount$ bonus!
+    Cumulative: true
     Rank: 1

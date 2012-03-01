@@ -1,24 +1,18 @@
 package com.noheroes.LoginReward;
 
-import com.noheroes.LoginReward.economy.iConomy6Balance;
-import com.noheroes.LoginReward.economy.iConomy5Balance;
-import com.noheroes.LoginReward.economy.DummyBalance;
 import com.noheroes.LoginReward.economy.Balance;
-
+import com.noheroes.LoginReward.economy.DummyBalance;
+import com.noheroes.LoginReward.economy.iConomy5Balance;
+import com.noheroes.LoginReward.economy.iConomy6Balance;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
 import org.bukkit.Server;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /*
  * Now uses MiniDB by Nijkokun.
@@ -28,8 +22,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 public class LoginReward extends JavaPlugin {
     
-	private static final Logger logr = Logger.getLogger("Minecraft");
-        private static String pluginName;
+        private static LoginReward instance;
         
 	private static Balance iConomy = null;
         private static PlayerStorage ps = null;
@@ -50,25 +43,23 @@ public class LoginReward extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-            PluginManager pm = getServer().getPluginManager();
-            pm.registerEvent(Type.PLAYER_JOIN, playerListener, Event.Priority.Monitor, this);
-            pm.registerEvent(Type.PLUGIN_ENABLE, pluginListener, Event.Priority.Monitor, this);
-            pm.registerEvent(Type.PLUGIN_DISABLE, pluginListener, Event.Priority.Monitor, this);
+            instance = this;
+            
+            getServer().getPluginManager().registerEvents(playerListener, this);
+            getServer().getPluginManager().registerEvents(pluginListener, this);
             
             server = getServer();
             LoginReward.db = this;
             
-            pluginName = "[" + this.getDescription().getName() + "] ";
-            
             //Try once here, otherwise just listen for it.
-            if(pm.isPluginEnabled("iConomy")){
-                if(pm.getPlugin("iConomy").getClass().getName().equals("com.iCo6.iConomy")) {
-                    iConomy = new iConomy6Balance(this, (com.iCo6.iConomy)pm.getPlugin("iConomy"));
+            if(getServer().getPluginManager().isPluginEnabled("iConomy")){
+                if(getServer().getPluginManager().getPlugin("iConomy").getClass().getName().equals("com.iCo6.iConomy")) {
+                    iConomy = new iConomy6Balance(this, (com.iCo6.iConomy)getServer().getPluginManager().getPlugin("iConomy"));
                     LoginReward.slog("Hooked iConomy 6.");
                 } 
                 
-                else if(pm.getPlugin("iConomy").getClass().getName().equals("com.iConomy.iConomy")) {
-                    iConomy = new iConomy5Balance(this, (com.iConomy.iConomy)pm.getPlugin("iConomy"));
+                else if(getServer().getPluginManager().getPlugin("iConomy").getClass().getName().equals("com.iConomy.iConomy")) {
+                    iConomy = new iConomy5Balance(this, (com.iConomy.iConomy)getServer().getPluginManager().getPlugin("iConomy"));
                     LoginReward.slog("Hooked iConomy 5.");
                 }
             } else {
@@ -111,11 +102,11 @@ public class LoginReward extends JavaPlugin {
     }
     
     public static void slog(String message){
-        logr.log(Level.INFO, LoginReward.pluginName + message);
+        instance.getLogger().log(Level.INFO, message);
     }
     
     public static void log(Level level, String message){
-        logr.log(level, message);
+        instance.getLogger().log(level, message);
     }
     
     public RewardGroup[] getGroups(){
