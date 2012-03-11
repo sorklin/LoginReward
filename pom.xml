@@ -4,7 +4,7 @@
 
   <groupId>com.noheroes</groupId>
   <artifactId>LoginReward</artifactId>
-  <version>0.6</version>
+  <version>0.65</version>
   <packaging>jar</packaging>
 
   <name>LoginReward</name>
@@ -45,17 +45,9 @@
         </dependency>
         
         <dependency>
-            <groupId>com.iConomy</groupId>
-            <artifactId>iConomy</artifactId>
-            <version>5.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.iCo6</groupId>
-            <artifactId>iConomy</artifactId>
-            <version>6.0.8b</version>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.2.11</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

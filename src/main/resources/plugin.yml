@@ -1,6 +1,6 @@
 name: LoginReward
 main: com.noheroes.LoginReward.LoginReward
-version: 0.6
+version: 0.65
 author: Sorklin
-softdepend: [iConomy]
+softdepend: [Vault]
 description: Based on DailyBonus, etc. Rewritten for group based rewards.

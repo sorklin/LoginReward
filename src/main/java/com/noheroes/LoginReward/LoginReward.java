@@ -2,16 +2,17 @@ package com.noheroes.LoginReward;
 
 import com.noheroes.LoginReward.economy.Balance;
 import com.noheroes.LoginReward.economy.DummyBalance;
-import com.noheroes.LoginReward.economy.iConomy5Balance;
-import com.noheroes.LoginReward.economy.iConomy6Balance;
+import com.noheroes.LoginReward.economy.VaultBalance;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Server;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
@@ -24,7 +25,7 @@ public class LoginReward extends JavaPlugin {
     
         private static LoginReward instance;
         
-	private static Balance iConomy = null;
+	private static Balance econ = null;
         private static PlayerStorage ps = null;
 	private static Server server = null;
         private static LoginReward db;
@@ -51,20 +52,15 @@ public class LoginReward extends JavaPlugin {
             server = getServer();
             LoginReward.db = this;
             
-            //Try once here, otherwise just listen for it.
-            if(getServer().getPluginManager().isPluginEnabled("iConomy")){
-                if(getServer().getPluginManager().getPlugin("iConomy").getClass().getName().equals("com.iCo6.iConomy")) {
-                    iConomy = new iConomy6Balance(this, (com.iCo6.iConomy)getServer().getPluginManager().getPlugin("iConomy"));
-                    LoginReward.slog("Hooked iConomy 6.");
-                } 
-                
-                else if(getServer().getPluginManager().getPlugin("iConomy").getClass().getName().equals("com.iConomy.iConomy")) {
-                    iConomy = new iConomy5Balance(this, (com.iConomy.iConomy)getServer().getPluginManager().getPlugin("iConomy"));
-                    LoginReward.slog("Hooked iConomy 5.");
-                }
-            } else {
-                iConomy = new DummyBalance(this);
-                LoginReward.slog("No economy plugin found. Using Dummy economy.");
+            log(Level.INFO, "Attempting to connect to Vault.");
+            if (getServer().getPluginManager().getPlugin("Vault") != null) {
+                RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+                econ = new VaultBalance(this, rsp.getProvider());
+            }
+            
+            if(econ == null){
+                econ = new DummyBalance(this);
+                LoginReward.slog("Vault not found or it cannot connect to economy plugin. Using Dummy economy.");
             }
             
             this.loadconfig(this.getConfig());
@@ -80,17 +76,17 @@ public class LoginReward extends JavaPlugin {
             LoginReward.slog(pdf.getName() + " version " + pdf.getVersion() + " is enabled.");
 	}
         
-        
+    
     public static Server getBukkitServer() {
         return server;
     }
 
     public static Balance getBalanceHandler() {
-        return iConomy;
+        return econ;
     }
     
     public static void setBalanceHandler(Balance handler) {
-        iConomy = handler;
+        econ = handler;
     }
     
     public static PlayerStorage getPlayerStorage(){

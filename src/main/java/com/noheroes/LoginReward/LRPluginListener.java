@@ -17,13 +17,10 @@
 package com.noheroes.LoginReward;
 
 import com.noheroes.LoginReward.economy.DummyBalance;
-import com.noheroes.LoginReward.economy.iConomy5Balance;
-import com.noheroes.LoginReward.economy.iConomy6Balance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -38,32 +35,12 @@ public class LRPluginListener implements Listener {
         this.db = instance;
     }
 
-    @EventHandler(priority= EventPriority.MONITOR)
-    public void onPluginEnable(PluginEnableEvent event) {
-        Plugin p = event.getPlugin();
-        
-        if(p.getClass().getName().equals("com.iCo6.iConomy")) {
-            LoginReward.setBalanceHandler(new iConomy6Balance(db, (com.iCo6.iConomy)p));
-            LoginReward.slog("Hooked iConomy 6.");
-        } 
-
-        else if(p.getClass().getName().equals("com.iConomy.iConomy")) {
-            LoginReward.setBalanceHandler(new iConomy5Balance(db, (com.iConomy.iConomy)p));
-            LoginReward.slog("Hooked iConomy 5.");
-        }
-    }
-
-    @EventHandler(priority= EventPriority.MONITOR)
+    @EventHandler(priority= EventPriority.MONITOR, ignoreCancelled=true)
     public void onPluginDisable(PluginDisableEvent event) {
         Plugin p = event.getPlugin();
-        if(p.getClass().getName().equals("com.iCo6.iConomy")) {
+        if(p.getName().equalsIgnoreCase("vault")){
             LoginReward.setBalanceHandler(new DummyBalance(db));
-            LoginReward.slog("Unhooked iConomy 6. Using Dummy balance handler.");
-        }
-        
-        else if(p.getClass().getName().equals("com.iConomy.iConomy")) {
-            LoginReward.setBalanceHandler(new DummyBalance(db));
-            LoginReward.slog("Unhooked iConomy 5. Using Dummy balance handler.");
+            LoginReward.slog("Unhooked Vault. Using Dummy balance handler.");
         }
     }
 }
